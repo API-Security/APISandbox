@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "rocketmq.producer",
+      "type": "com.starcross.rocketmq.producer.demo.properties.MqProducerProperties",
+      "sourceType": "com.starcross.rocketmq.producer.demo.properties.MqProducerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "rocketmq.producer.group",
+      "type": "java.lang.String",
+      "sourceType": "com.starcross.rocketmq.producer.demo.properties.MqProducerProperties"
+    },
+    {
+      "name": "rocketmq.producer.namesrv-addr",
+      "type": "java.lang.String",
+      "sourceType": "com.starcross.rocketmq.producer.demo.properties.MqProducerProperties"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,64 @@
+version: "2"
+services:
+  4asystem:
+    build: ./4asystem/
+    image: 4asystem/4asystem
+    ports:
+      - "58080:8080"
+    extra_hosts:
+      - "4asystem:172.20.100.100"
+      - "web1:172.20.100.101"
+      - "web2:172.20.100.102"
+      - "web3:172.20.100.103"
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.100.100
+  web1:
+    build: ./web1/
+    image: 4asystem/web1
+    ports:
+      - "50080:80"
+    extra_hosts:
+      - "4asystem:172.20.100.100"
+      - "web1:172.20.100.101"
+      - "web2:172.20.100.102"
+      - "web3:172.20.100.103"
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.100.101
+        
+  web2:
+    build: ./web2/
+    image: 4asystem/web2
+    ports:
+      - "50081:80"
+    extra_hosts:
+      - "4asystem:172.20.100.100"
+      - "web1:172.20.100.101"
+      - "web2:172.20.100.102"
+      - "web3:172.20.100.103"
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.100.102
+        
+  web3:
+    build: ./web3/
+    image: 4asystem/web3
+    ports:
+      - "50082:80"
+    extra_hosts:
+      - "4asystem:172.20.100.100"
+      - "web1:172.20.100.101"
+      - "web2:172.20.100.102"
+      - "web3:172.20.100.103"
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.100.103
+        
+networks:
+   extnetwork:
+      ipam:
+         config:
+         - subnet: 172.20.100.0/24
+           gateway: 172.20.100.1
+

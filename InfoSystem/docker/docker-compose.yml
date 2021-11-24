@@ -1,0 +1,24 @@
+version: '3'
+services:
+  
+  infosystemmysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    image: infosystem/mysql
+    container_name: infosystem_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  infosystem:
+    build:
+      context: ./infosystem
+      dockerfile: Dockerfile
+    image: infosystem/infosystem
+    container_name: infosystem
+    ports:
+     - "58081:8081"
+    depends_on:
+      - infosystemmysql
+    
+

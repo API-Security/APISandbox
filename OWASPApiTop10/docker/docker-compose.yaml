@@ -1,0 +1,8 @@
+version: "2"
+services:
+  owaspapitop10:
+    build: ./
+    image: owaspapitop10/owaspapitop10
+    container_name: owaspapitop10
+    ports:
+      - "58084:8080"

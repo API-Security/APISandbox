@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>在线留言板</title>
+
+    <link rel="/canonical" href="https://getbootstrap.com/docs/4.2/examples/starter-template/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/static/starter-template.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">在线留言板</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/public_post.html">公共留言</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/private_post.html">私有留言</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active" style="margin-left: auto">
+                <a class="nav-link" style="float: right" href="#" id="btn_escape">退出</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <ul class="list-group" id="note_display">
+        </ul>
+
+        <div class="form-group" style="margin-top: 16px">
+            <label for="post">添加留言</label>
+            <div style="max-width: 500px; margin: auto" id="post">
+                <input class="form-control" id="post_title" style="margin-bottom: 1rem" placeholder="标题">
+                <textarea class="form-control" id="post_content" rows="3" placeholder="内容"></textarea>
+            </div>
+            <button type="button" id="btn_submit" class="btn btn-primary" style="margin-top: 20px; font-size: 16px">发表
+            </button>
+        </div>
+    </div>
+
+    <script src="static/graphql.js"></script>
+
+    <script>
+        isLogin().then((r) => {
+            if (!r) {
+                window.location = '/login.html'
+            }
+        })
+
+        var load_notes = function () {
+            new Promise(async resolve => {
+                try {
+                    let result = (await graphqlQuery(
+                        `query publicPost {
+                            publicPost (startIdx: 0, count: 1024) {
+                                id
+                                title
+                                content
+                                public
+                                authorId
+                                author {
+                                    id
+                                    username
+                                }
+                            }
+                        }`
+                    )).publicPost
+
+                    let note_display = document.getElementById("note_display");
+                    note_display.innerHTML = "";
+
+                    result.forEach((e) => {
+                        let l = document.createElement("li");
+                        l.classList.add("list-group-item")
+                        l.style = 'text-align: left'
+
+                        let title = document.createElement('h3')
+                        title.style = 'font-weight: bold'
+                        title.innerText = e.title
+
+                        let author = document.createElement('p')
+                        author.innerText = `作者: ${e.author.username}`
+                        author.style = 'margin-bottom: 0px; font-size: 1rem'
+
+                        let hr = document.createElement('hr')
+                        hr.style = 'margin-bottom: 3px; margin-top: 10px'
+
+                        let content = document.createElement('p')
+                        content.innerText = e.content
+                        content.style = 'margin-bottom: 0px'
+
+                        l.append(title)
+                        l.append(author)
+                        l.append(hr)
+                        l.append(content)
+                        note_display.append(l);
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
+                resolve();
+            })
+        }
+        document.addEventListener("DOMContentLoaded", load_notes)
+
+        let btn_submit = document.getElementById("btn_submit");
+        btn_submit.addEventListener("click", function () {
+            let postTitle = document.getElementById("post_title").value;
+            let postContent = document.getElementById("post_content").value;
+
+            document.getElementById("post_title").value = "";
+            document.getElementById("post_content").value = "";
+
+            new Promise(async resolve => {
+                try {
+                    let res = await graphqlQuery(
+                        `mutation createPost($title: String!, $content: String!) {
+                            createPost (content: $content, public: true, title: $title) {
+                                success
+                                post {
+                                    id
+                                    title
+                                    content
+                                    public
+                                    authorId
+                                    author {
+                                        id
+                                        username
+                                    }
+                                }
+                            }
+                        }`,
+                        {
+                            'title': postTitle,
+                            'content': postContent
+                        },
+                        true
+                    )
+
+                    if (!res.createPost.success) {
+                        alert('发表失败')
+                    }
+
+                    load_notes();
+                } catch (e) {
+                    alert("error")
+                }
+                resolve();
+            })
+        })
+
+        let btn_escape = document.getElementById("btn_escape");
+        btn_escape.addEventListener('click', function () {
+            setToken(null)
+            window.location = '/login.html'
+        })
+    </script>
+
+</main><!-- /.container -->
+<script src="/static/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="/static/bootstrap.bundle.min.js"
+        integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP"
+        crossorigin="anonymous"></script>
+</body>
+</html>

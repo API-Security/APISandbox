@@ -1,0 +1,61 @@
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddRequestHeader=gateway-env, springcloud-gateway
+      routes:
+        - id: "server_v2"
+          uri: "http://127.0.0.1:8002"
+          predicates:
+            - Path=/api/v2/**
+            - name: CustomReadBody
+              args:
+                inClass: '#{T(String)}'
+                predicate: '#{@bodyPredicate}' #注入实现predicate接口类
+          filters:
+            - Demo=true
+            - PreserveHostHeader # 防止host被修改为localhost
+        - id: "server_v1"
+          uri: "http://127.0.0.1:8001"
+          predicates:
+            - Path=/api/**
+            - name: CustomReadBody # 将body读入缓存
+              args:
+                inClass: '#{T(String)}'
+                predicate: '#{@bodyPredicate}'
+          filters:
+            - Demo=true
+            - PreserveHostHeader # 防止host被修改为localhost
+        - id: "oasystem"
+          uri: "http://oasystem:8080"
+          predicates:
+            - Path=/oasystem/**
+          filters:
+            - Demo=true
+            - PreserveHostHeader # 防止host被修改为localhost
+  codec:
+    max-in-memory-size: 5MB # 修复拦截POST请求后内存超出缓冲区
+
+management:
+  endpoints:
+    # 暴露 EndPoint 以供访问，有jmx和web两种方式，exclude 的优先级高于 include
+    jmx:
+      exposure:
+        # exclude: '*'
+        include: "*"
+    web:
+      exposure:
+        # exclude: '*'
+        include: ["health","info","beans","mappings","logfile","gateway"]
+  endpoint:
+    env:
+      post:
+        enabled: true
+
+server:
+  port: 8000

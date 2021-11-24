@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+
+{% block main %}
+
+{% if user == null %}
+<h3>Welcome to Portal OA System</h3>
+<div style="max-width: 100%">
+    <img src="/oasystem/static/img/index.png" alt="index" style="max-width: 100%;max-height: 100%;display: block;margin: auto;">
+</div>
+<p>Please <a href="/oasystem/signin">Sign In</a> or <a href="/oasystem/register">Register</a>
+{% else %}
+<h3>Welcome {{ user.name }}!</h3>
+{% endif %}
+
+{% endblock %}

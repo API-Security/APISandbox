@@ -1,0 +1,14 @@
+com/starcross/rocketmq/producer/demo/dto/UserDTO.class
+META-INF/spring-configuration-metadata.json
+com/starcross/rocketmq/producer/demo/controller/HelloController.class
+com/starcross/rocketmq/producer/demo/service/impl/UserServiceImpl.class
+com/starcross/rocketmq/producer/demo/config/DefaultProducerConfig.class
+com/starcross/rocketmq/producer/demo/dto/MqMessageDTO.class
+com/starcross/rocketmq/producer/demo/RocketmqProducerDemoApplication.class
+com/starcross/rocketmq/producer/demo/service/OrderService.class
+com/starcross/rocketmq/producer/demo/properties/MqProducerProperties.class
+com/starcross/rocketmq/producer/demo/dto/OrderDTO.class
+com/starcross/rocketmq/producer/demo/mq/service/MqProducerService.class
+com/starcross/rocketmq/producer/demo/service/impl/OrderServiceImpl.class
+com/starcross/rocketmq/producer/demo/mq/service/impl/MqProducerServiceImpl.class
+com/starcross/rocketmq/producer/demo/service/UserService.class

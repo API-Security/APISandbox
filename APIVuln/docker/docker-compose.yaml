@@ -1,0 +1,45 @@
+version: '2'
+services:
+  rocketmq: 
+    build: ./apivuln-rocketmq
+    image: apivuln/rocketmq
+    extra_hosts:
+      - "rocketmq:10.0.20.12"
+      - "producer:10.0.20.13"
+      - "consumer:10.0.20.14"
+    restart: always
+    networks:
+      internal_network:
+        ipv4_address: 10.0.20.12
+  producer:
+    build: ./apivuln-producer
+    image: apivuln/producer
+    extra_hosts:
+      - "rocketmq:10.0.20.12"
+      - "producer:10.0.20.13"
+      - "consumer:10.0.20.14"
+    ports:
+      - "58083:58080"
+    restart: always
+    networks:
+      internal_network:
+        ipv4_address: 10.0.20.13
+  consumer: 
+    build: ./apivuln-consumer
+    image: apivuln/consumer
+    extra_hosts:
+      - "rocketmq:10.0.20.12"
+      - "producer:10.0.20.13"
+      - "consumer:10.0.20.14"
+    restart: always
+    networks:
+      internal_network:
+        ipv4_address: 10.0.20.14
+
+networks:
+  internal_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.20.0/24

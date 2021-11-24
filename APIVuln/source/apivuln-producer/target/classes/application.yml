@@ -1,0 +1,7 @@
+server:
+  port: 58080
+
+rocketmq:
+  producer:
+    namesrvAddr: 10.0.20.12:9876
+    group: PID_BLOG_PROJECT

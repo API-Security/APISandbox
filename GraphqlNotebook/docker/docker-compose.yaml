@@ -1,0 +1,7 @@
+version: '3'
+services:
+  app:
+    build: .
+    image: graphql/notebook
+    ports:
+      - "55000:5000"

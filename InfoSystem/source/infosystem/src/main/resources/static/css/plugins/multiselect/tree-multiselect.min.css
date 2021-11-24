@@ -1,0 +1,108 @@
+/* jQuery Tree Multiselect v1.14.5 | (c) Patrick Tsai et al. | MIT Licensed */
+div.tree-multiselect div.title:hover, div.tree-multiselect input[type=checkbox]:hover {
+    cursor: pointer
+}
+
+div.tree-multiselect {
+    border: 1px solid #ddd;
+    display: table;
+    height: inherit;
+    width: 100%
+}
+
+div.tree-multiselect > div.selected, div.tree-multiselect > div.selections {
+    vertical-align: top;
+    float: left;
+    padding: 1%;
+    width: 50%;
+    height: 550px;
+    overflow-y: auto;
+    
+}
+
+div.tree-multiselect > div.selections {
+    border-left: solid 1px #D8D8D8;
+    float: right;
+}
+
+div.tree-multiselect > div.selections.no-border {
+    border-right: none
+}
+
+div.tree-multiselect div.section > div.item, div.tree-multiselect div.section > div.section {
+    padding-left: 20px
+}
+
+div.tree-multiselect div.item, div.tree-multiselect div.title {
+    margin-bottom: 2px
+}
+
+div.tree-multiselect div.title {
+    background: #f5f5f5;
+    color: #333;
+    padding: 2px
+}
+
+div.tree-multiselect div.title > * {
+    display: inline-block
+}
+
+div.tree-multiselect div.title > span.collapse-section {
+    margin: 0 3px;
+    width: 8px
+}
+
+div.tree-multiselect input[type=checkbox] {
+    margin-right: 5px
+}
+
+div.tree-multiselect > div.selections div.item {
+    margin-left: 16px;
+
+}
+
+div.tree-multiselect > div.selected > div.item {
+    padding: 5px;
+    border-radius: 2px;
+    background: #f5f5f5
+}
+
+div.tree-multiselect > div.selected.ui-sortable > div.item:hover {
+    cursor: move
+}
+
+div.tree-multiselect span.description{
+    padding: 0 5px;
+    margin-right: 5px;
+    background: #f8ac59;
+    color: #fff;
+    border-radius: 2px
+}
+
+div.tree-multiselect span.remove-selected {
+    padding: 0 5px;
+    margin-right: 8px;
+    background: #23c6c8;
+    color: #fff;
+    border-radius: 2px
+}
+
+div.tree-multiselect span.remove-selected:hover {
+    cursor: pointer
+}
+
+div.tree-multiselect span.description:hover {
+    cursor: help
+}
+
+div.tree-multiselect div.temp-description-popup {
+    background: #FAFAFA;
+    padding: 5px;
+    border: 2px solid #676767;
+    border-radius: 3px
+}
+
+div.tree-multiselect span.section-name {
+    float: right;
+    font-style: italic
+}

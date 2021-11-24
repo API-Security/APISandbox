@@ -1,0 +1,11 @@
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/dto/OrderDTO.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/handler/AddOrderHandler.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/properties/MqConsumerProperties.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/mq/listener/AbstractConsumerListener.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/handler/AddUserHandler.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/mq/listener/DefaultConsumerListener.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/dto/UserDTO.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/enums/MqConsumerBeanEnum.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/RocketmqConsumerDemoApplication.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/mq/service/impl/AbstractMqConsumerServiceImpl.java
+/Users/yulige/Desktop/Idea_Project/apivuln/apivuln-consumer/src/main/java/com/starcross/rocketmq/consumer/demo/mq/service/MqConsumerService.java

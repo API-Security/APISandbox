@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>财务管理系统 - 请登录</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- For-Mobile-Apps-and-Meta-Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- //For-Mobile-Apps-and-Meta-Tags -->
+</head>
+
+<body>
+    <h1>财务管理系统</h1>
+    <div class="container w3">
+        <h2>Login</h2>
+        <form action="#" method="post">
+            <div class="username"><span class="username">Username:</span><input type="text" name="name" class="name" placeholder="" required="" id="username">
+                <div class="clear"></div>
+            </div>
+            <div class="password-agileits"><span class="username">Password:</span><input type="password" name="password" class="password" placeholder="" required="" id="password">
+                <div class="clear"></div>
+            </div>
+            <div class="rem-for-agile"><input type="checkbox" name="remember" class="remember">Remember me<br><a href="#">Forgot Password</a><br></div>
+            <div class="login-w3"><button type="button" id="submit">Login</div>
+            <lable id="showInfo"></lable>
+            <div class="clear"></div>
+        </form>
+    </div>
+    <div class="footer-w3l">
+        <p> 2021 </p>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = function(){
+            var submit = document.getElementById('submit');
+            submit.onclick  = function(){
+                var application = "web2"
+                var username = document.getElementById('username').value;
+                var password = document.getElementById('password').value;
+                var xhr = null;
+                if(window.XMLHttpRequest){
+                    xhr = new XMLHttpRequest();
+                }else{
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                var url = `./s.php?action=login`;
+                xhr.open('post',url,false);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200){
+                            var data = xhr.responseText;
+                            if(data == 'success'){
+                                document.getElementById('showInfo').innerHTML = 'Success';
+                                setTimeout(function(){
+                                    location.href = '/admin/admin.php';
+                                },2000);
+                            }else{
+                                document.getElementById('showInfo').innerHTML = 'Fail';
+                            }
+                        }else{
+                            document.getElementById('showInfo').innerHTML = 'Error';
+                        }
+                    };
+                }
+
+                xhr.send(`username=${username}&password=${password}`);
+            }
+        }
+        </script>
+</body>
+
+</html>

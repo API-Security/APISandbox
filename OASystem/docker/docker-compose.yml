@@ -1,0 +1,51 @@
+version: "3"
+services:
+  oasystemmysql:
+    image: mysql:8.0.12
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: oasystem_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: portal
+      MYSQL_PASSWORD: sqlpass_of_portal
+      MYSQL_DATABASE: portal
+    networks:
+      extnetwork2:
+        ipv4_address: 172.192.1.200
+
+  oasystem:
+    build: ./oasystem
+    image: oasystem/apivul_springboot_actuator_oasystem
+    container_name: oasystem
+    restart: always
+    entrypoint: /start.sh
+    ports: 
+      - "58082:8080"
+    depends_on:
+      - oasystemmysql
+    networks:
+      extnetwork2:
+        ipv4_address: 172.192.1.10
+
+  gateway:
+    build: ./gateway
+    image: oasystem/apivul_springcloud_gateway
+    container_name: gateway
+    restart: always
+    entrypoint: /start.sh
+    ports: 
+      - "58000:8000"
+    extra_hosts:
+      - "oasystem:172.192.1.10"
+    networks:
+      extnetwork2:
+        ipv4_address: 172.192.1.100
+    
+
+networks:
+  extnetwork2:
+    ipam:
+      config:
+      - subnet: 172.192.1.0/24
+        gateway:  172.192.1.1

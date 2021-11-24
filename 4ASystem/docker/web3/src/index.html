@@ -1,0 +1,84 @@
+
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理系统 - 请登录</title>
+    <link rel="stylesheet" type="text/css" href="static/css/login.css">
+</head>
+<body>
+    <div class="main">
+        <div class="title">
+            <span>登录</span>
+        </div>
+    
+        <div class="title-msg">
+            <span>请输入登录账户和密码</span>
+        </div>
+    
+        <form class="login-form" action="index.php" method="post" novalidate >
+            <!--输入框-->
+            <div class="input-content">
+                <!--autoFocus-->
+                <div>
+                    <input type="text" autocomplete="off"
+                        placeholder="用户名" name="username" id="username" required/>
+                </div>
+                <div style="margin-top: 16px">
+                    <input type="password"
+                        autocomplete="off" placeholder="登录密码" name="password" id="password" required maxlength="32"/>
+                </div>
+            </div>
+    
+            <!--登入按钮-->
+            <div style="text-align: center">
+                <button type="button" class="enter-btn" id="submit">登录</button>
+            </div>
+            <lable id="showInfo"></lable>
+            <div class="foor">
+                <div class="left"><span>忘记密码 ?</span></div>
+    
+                <div class="right"><span>注册账户</span></div>
+            </div>
+        </form>
+    
+    </div>
+    <script type="text/javascript">
+        window.onload = function(){
+            var submit = document.getElementById('submit');
+            submit.onclick  = function(){
+                var application = "web2"
+                var username = document.getElementById('username').value;
+                var password = document.getElementById('password').value;
+                var xhr = null;
+                if(window.XMLHttpRequest){
+                    xhr = new XMLHttpRequest();
+                }else{
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                var url = `./s.php?action=login`;
+                xhr.open('post',url,false);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200){
+                            var data = xhr.responseText;
+                            if(data == 'success'){
+                                document.getElementById('showInfo').innerHTML = 'Success';
+                                setTimeout(function(){
+                                    location.href = '/admin/admin.php';
+                                },2000);
+                            }else{
+                                document.getElementById('showInfo').innerHTML = 'Fail';
+                            }
+                        }else{
+                            document.getElementById('showInfo').innerHTML = 'Error';
+                        }
+                    };
+                }
+
+                xhr.send(`username=${username}&password=${password}`);
+            }
+        }
+        </script>
+</body>

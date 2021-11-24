@@ -1,0 +1,324 @@
+swagger: "2.0"
+info:
+  description: "OWASPApiTop10靶场"
+  version: "1.0.0"
+  title: "OWASPApiTop10"
+host: "127.0.0.1:8080"
+basePath: "/"
+
+tags:
+- name: "API1: BrokenObjectLevelAuthorization"
+  description: ""
+- name: "API2: BrokenAuthentication"
+  description: ""
+- name: "API3: ExcessiveDataExposure"
+  description: ""
+- name: "API4: LackOfResourcesAndRateLimiting"
+  description: ""
+- name: "API5: BrokenFunctionLevelAuthorization"
+  description: ""
+- name: "API6: MassAssignment"
+  description: ""
+- name: "API7: SecurityMisconfiguration"
+  description: ""
+- name: "API8: Injection"
+  description: ""
+- name: "API9: ImproperAssetsManagement"
+  description: ""
+- name: "API10: InsufficientLoggingAndMonitoring"
+  description: ""
+
+schemes:
+- "https"
+- "http"
+
+produces:
+  - application/json
+  
+paths:
+  /v2/user/getuserinfo/{id}:
+    get:
+      tags:
+      - "API1: BrokenObjectLevelAuthorization"
+      summary: "获取指定ID用户信息"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API1"
+        "400":
+          description: "Error"
+  
+  /v2/user/getuseremail:
+    get:
+      tags:
+      - "API3: ExcessiveDataExposure"
+      summary: "获取所有用户Email"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API3"
+        "400":
+          description: "Error"
+  
+  /v2/login:
+    post:
+      tags:
+      - "API4: LackOfResourcesAndRateLimiting"
+      - "API8: Injection"
+      summary: "登录"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: username
+        in: formData
+        description: "用户名"
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: "用户登陆密码"
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API4"
+        "400":
+          description: "Error"
+  
+  /v2/user/getuserprofile:
+    get:
+      tags:
+      - "API5: BrokenFunctionLevelAuthorization"
+      summary: "获取当前用户信息"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API1"
+        "400":
+          description: "Error"
+
+  /v2/user/getuserprofiles:
+    get:
+      tags:
+      - "API5: BrokenFunctionLevelAuthorization"
+      summary: "获取所有用户信息"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API1"
+        "400":
+          description: "Error"
+
+  /v2/register:
+    post:
+      tags:
+      - "API6: MassAssignment"
+      summary: "注册"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: username
+        in: formData
+        description: "用户名"
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: "用户登陆密码"
+        required: true
+        type: string
+      - name: email
+        in: formData
+        description: "邮箱"
+        required: true
+        type: string
+      - name: admin
+        in: formData
+        description: "是否为管理员"
+        required: true
+        type: string
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API6"
+        "400":
+          description: "Error"
+
+  /static:
+    get:
+      tags:
+      - "API7: SecurityMisconfiguration"
+      summary: "展示静态资源"
+      responses:
+        "200":
+          description: "Some static files"
+        "400":
+          description: "Error"
+          
+  /v2/user/logout:
+    get:
+      tags:
+      - "API8: Injection"
+      summary: "注销"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API6"
+        "400":
+          description: "Error"
+          
+  /v1/getenv:
+    get:
+      tags:
+      - "API9: ImproperAssetsManagement"
+      summary: "获取环境变量"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API9"
+        "400":
+          description: "Error"
+
+  /v2/getenv:
+    get:
+      tags:
+      - "API9: ImproperAssetsManagement"
+      summary: "获取环境变量，v2该接口禁止访问"
+      responses:
+        "403":
+          description: "Forbidden"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API6"
+
+  /v1/evil:
+    get:
+      tags:
+      - "API10: InsufficientLoggingAndMonitoring"
+      summary: "应用没有记录日志"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/API6"
+
+definitions:
+  API1:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/API1_data"
+  API1_data:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      token:
+        type: "string"
+        format: "string"
+      username:
+        type: "string"
+        format: "string"
+      email:
+        type: "string"
+        format: "string"
+      admin:
+        type: "integer"
+        format: "int32"
+  API3:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/API3_data"
+  API3_data:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      email:
+        type: "string"
+        format: "string"
+  API4:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      msg:
+        type: "string"
+        format: "string"
+      username:
+        type: "string"
+        format: "string"
+  API6:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      msg:
+        type: "string"
+        format: "string"
+  API9:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/API9_data"
+  API9_data:
+    type: "object"
+    properties:
+      <the_environment_path>:
+        type: "string"
+  

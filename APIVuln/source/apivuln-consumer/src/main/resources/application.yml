@@ -1,0 +1,9 @@
+server:
+  port: 58081
+
+rocketmq:
+  consumer:
+    namesrvAddr: 10.0.20.12:9876
+    group: CID_BLOG_PROJECT
+
+

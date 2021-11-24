@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Portal OA System</title>
+    <script src="/oasystem/static/js/jquery.js"></script>
+    <link href="/oasystem/static/css/bootstrap.css" rel="stylesheet">
+  </head>
+  <body style="font-size:16px">
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">Home</a></h5>
+      <nav class="my-2 mr-md-3">
+        <a class="p-2 text-dark" target="_blank" href="/#">Learn</a>
+      </nav>
+      {% if user==null %}
+        <a href="/oasystem/signin" class="btn btn-outline-primary">Sign In</a>
+      {% else %}
+        <span>Welcome, <a href="/oasystem/user/profile">{{ user.name }}</a></span>
+        &nbsp;&nbsp;&nbsp;
+        <a href="/oasystem/signout" class="btn btn-outline-primary">Sign Out</a>
+      {% endif %}
+    </div>
+
+    <div class="container" style="max-width: 960px">
+      <div class="row">
+        <div class="col-12 col-md">
+          {% block main %}
+          {% endblock %}
+        </div>
+      </div>
+
+      <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+          <div class="col-12 col-md">
+            <h5>Copyright&copy;2020 {{ __time__ }}</h5>
+            <p>
+              <a target="_blank" href="/#">Learn</a> -
+              <a target="_blank" href="/#">Download</a> -
+              <a target="_blank" href="/#">Github</a>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

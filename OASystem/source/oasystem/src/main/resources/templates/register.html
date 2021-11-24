@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+
+{% block main %}
+
+<form method="post" action="/oasystem/register">
+  <h3>Register</h3>
+  {% if error != null %}
+  <div class="form-group">
+    <p id="error" class="text-danger">{{ error }}</p>
+  </div>
+  {% endif %}
+  <div class="form-group">
+    <label>Email</label>
+    <input name="email" type="email" class="form-control" placeholder="Email" value="{{ email }}">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input name="password" type="password" class="form-control" placeholder="Password" minlength="6" maxlength="20">
+  </div>
+  <div class="form-group">
+    <label>Name</label>
+    <input name="name" type="text" class="form-control" placeholder="Name" minlength="1" maxlength="50">
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
+  </div>
+  <div class="form-group">
+    <a href="/oasystem/signin">Already have an account?</a>
+  </div>
+</form>
+
+{% endblock %}
