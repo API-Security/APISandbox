@@ -38,9 +38,9 @@ gin的session在知道secret之后就可以任意伪造
 
 `/v2/register`
 
-前端请求有隐藏的admin标签，可以手动加上，admin为true可以注册为管理员权限用户
+前端请求有admin字段，可以手动修改，admin为true可以注册为管理员权限用户
 
-username=123&password=123&admin=false
+`{"username": "123","password": "123","email": "test@123.com","admin": "true"}`
 
 ### API7: Security misconfiguration [✔︎] 
 

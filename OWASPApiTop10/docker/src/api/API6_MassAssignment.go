@@ -56,8 +56,8 @@ func Register(c *gin.Context) {
 		return
 	}
 	//向数据库插入用户
-	sql1 := "INSERT INTO user (token,username,password,email) VALUES (?,?,?,?);"
-	res1, err1 := db.Exec(sql1, Token(), request.Username, MD5(request.Password), request.Email)
+	sql1 := "INSERT INTO user (token,username,password,email,admin) VALUES (?,?,?,?,?);"
+	res1, err1 := db.Exec(sql1, Token(), request.Username, MD5(request.Password), request.Email, func() int{if request.Admin=="true"{return 1}else{return 0}}())
 	if err1 != nil {
 		fmt.Println("register insert error: ", err1)
 		c.JSON(400, gin.H{"code": 400, "msg": "Register error!"})
