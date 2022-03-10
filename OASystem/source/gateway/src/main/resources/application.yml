@@ -31,13 +31,13 @@ spring:
           filters:
             - Demo=true
             - PreserveHostHeader # 防止host被修改为localhost
-        - id: "oasystem"
-          uri: "http://oasystem:8080"
-          predicates:
-            - Path=/oasystem/**
-          filters:
-            - Demo=true
-            - PreserveHostHeader # 防止host被修改为localhost
+#        - id: "oasystem"
+#          uri: "http://oasystem:8080"
+#          predicates:
+#            - Path=/oasystem/**
+#          filters:
+#            - Demo=true
+#            - PreserveHostHeader # 防止host被修改为localhost
   codec:
     max-in-memory-size: 5MB # 修复拦截POST请求后内存超出缓冲区
 
