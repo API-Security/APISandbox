@@ -89,3 +89,8 @@ https://github.com/API-Security/APISandbox
 有更多想法可以加微信yuligesec聊聊~
 ![](./images/wx.jpg)
 
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
